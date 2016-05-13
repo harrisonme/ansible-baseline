@@ -1,5 +1,4 @@
 # ansible-baseline
-Baseline webserver configuration via Ansible
 
 This is an Ansible playbook that will take a bare, all-defaults RHEL/CentOS 7 box and set it up as a basic, somewhat more secure Apache webserver (not an original concept, but it's tailored to my current needs). Note that it uses features specific to RHEL 7, so at the moment it won't work on any other distros.
 
