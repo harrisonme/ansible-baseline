@@ -1,0 +1,8 @@
+---
+# Update packages and install those deemed required
+
+- name: upgrade all packages
+  yum: name=* state=latest
+  
+- name: install required packages
+  yum: name={{ required_packages }} state=installed

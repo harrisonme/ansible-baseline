@@ -1,0 +1,5 @@
+---
+# SSH handlers
+
+- name: reload ssh config
+  service: name=sshd state=reloaded enabled=yes

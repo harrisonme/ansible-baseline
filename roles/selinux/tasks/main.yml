@@ -1,0 +1,12 @@
+---
+# Ensure SELinux is active
+
+# The prereqs for the targeted policy package should take care of everything
+- name: ensure selinux packages are installed
+  yum: name=selinux-policy-targeted state=present
+
+- name: set selinux to enforcing with targeted policy
+  selinux: policy=targeted state=enforcing
+
+- name: relabel selinux contexts on reboot
+  file: path=/.autorelabel state=touch

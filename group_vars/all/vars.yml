@@ -1,0 +1,12 @@
+---
+# Variables for all hosts
+
+required_packages:
+  - vim
+
+# Redirect these variables to those encrypted in vault.yml
+root_password: "{{ vault_root_password }}"
+admin_password: "{{ vault_admin_password }}"
+admin_username: "{{ vault_admin_username }}"
+public_key: "{{ vault_public_key }}"
+timezone: "{{ vault_timezone }}"

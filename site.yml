@@ -1,0 +1,20 @@
+---
+# Apply baseline configuration for RHEL 7 webservers
+
+- name: apply baseline configs
+  hosts: testing
+  remote_user: root
+  
+  roles:
+    - accounts
+    - packages
+    - ssh
+    - ntp
+    - webserver
+    - selinux
+  
+  post_tasks:
+    - name: restart system
+      shell: sleep 2 && systemctl reboot
+      async: 1000
+      poll: 0

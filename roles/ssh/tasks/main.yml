@@ -1,0 +1,33 @@
+---
+# SSH configuration
+
+- name: start and enable firewalld service
+  service: name=firewalld state=started enabled=yes
+
+- name: enable firewalld ssh service
+  firewalld: service=ssh permanent=true state=enabled immediate=true
+  
+- name: rate limit ssh connections
+  command: "{{ item }}"
+  with_items:
+    - firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 0 -p tcp --dport 22 -m state --state NEW -m recent --set
+    - firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 1 -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 30 --hitcount 4 -j REJECT --reject-with tcp-reset
+    - firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT_direct 0 -p tcp --dport 22 -m state --state NEW -m recent --set
+    - firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT_direct 1 -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 30 --hitcount 4 -j REJECT --reject-with tcp-reset
+    - firewall-cmd --reload
+
+- name: disable ssh password authentication
+  lineinfile: dest=/etc/ssh/sshd_config
+              regexp="^PasswordAuthentication"
+              line="PasswordAuthentication no"
+              state=present
+  notify:
+    - reload ssh config
+
+- name: disable ssh root access
+  lineinfile: dest=/etc/ssh/sshd_config
+              regexp="^PermitRootLogin"
+              line="PermitRootLogin no"
+              state=present
+  notify:
+    - reload ssh config

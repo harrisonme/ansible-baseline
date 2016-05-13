@@ -1,0 +1,11 @@
+---
+# Set timezone and install/enable ntp
+
+- name: install ntp
+  yum: name=ntp state=installed
+
+- name: set timezone
+  command: timedatectl set-timezone {{ timezone }}
+
+- name: enable ntp
+  command: timedatectl set-ntp true
